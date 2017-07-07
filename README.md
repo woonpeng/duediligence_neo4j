@@ -1,4 +1,4 @@
-# Neo4J 3.1.3 with endpoints for purge, backup and restore
+# Neo4J 3.1 with endpoints for purge, backup and restore
 
 ## Endpoint hooks 
 
@@ -25,12 +25,4 @@ import os
 
 hmac.new(key=os.environ['WEBHOOK_SECRET'], msg='username', digestmod=hashlib.sha256).hexdigest()
 ```
-
-## Staging
-
-On staging, you should use `docker-compose.yml` and `docker-compose.staging.yml` in this order
-to run the container.
-
-```bash
-sudo docker-compose -f docker-compose.yml -f docker-compose.staging.yml up -d
-```
+ 
