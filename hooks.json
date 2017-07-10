@@ -25,5 +25,41 @@
       ] 
     
     } 
+  },
+
+  {
+    "id": "restore-db",
+    "execute-command": "bin/restore.sh",
+    "command-working-directory": "/var/lib/neo4j",
+    "include-command-output-in-response": true,
+    "trigger-rule-mismatch-http-response-code": 403,
+    "pass-arguments-to-command":
+    [
+      {
+        "source": "url",
+        "name": "i"
+      }
+    ],
+    "trigger-rule":
+    {
+
+      "and":
+      [
+        {
+          "match":
+          {
+            "type": "payload-hash-sha256",
+            "secret": "",
+            "parameter":
+            {
+              "source": "header",
+              "name": "X-Hub-Signature"
+            }
+          }
+        }
+      ]
+
+    }
   }
+
 ]

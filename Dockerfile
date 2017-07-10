@@ -11,7 +11,7 @@ COPY hooks.json conf/
 
 # Copy the script and dummy 'service' command to emulate as neo4j service 
 # This is to make the setup similar to an actual neo4j server (at least to the purge and backup script)
-COPY purge-and-backup.sh gen_hook.sh service bin/
+COPY purge-and-backup.sh gen_hook.sh restore.sh wait-for-db.sh service bin/
 
 # Add path to the bin directory
 ENV PATH=${PATH}:/var/lib/neo4j/bin
