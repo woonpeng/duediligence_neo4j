@@ -1,0 +1,98 @@
+[
+  {
+    "id": "cleanup",
+    "execute-command": "bin/cleanup.sh",
+    "command-working-directory": "/var/lib/neo4j",
+    "include-command-output-in-response": true,
+    "trigger-rule-mismatch-http-response-code": 403,
+    "trigger-rule": {
+      "and": [
+        {
+          "match": {
+            "type": "payload-hash-sha256",
+            "secret": "",
+            "parameter": {
+              "source": "header",
+              "name": "X-Hub-Signature"
+            }
+          }
+        }
+      ]
+    }
+  },
+  {
+    "id": "purge",
+    "execute-command": "bin/purge.sh",
+    "command-working-directory": "/var/lib/neo4j",
+    "include-command-output-in-response": true,
+    "trigger-rule-mismatch-http-response-code": 403,
+    "trigger-rule": {
+      "and": [
+        {
+          "match": {
+            "type": "payload-hash-sha256",
+            "secret": "",
+            "parameter": {
+              "source": "header",
+              "name": "X-Hub-Signature"
+            }
+          }
+        }
+      ]
+    }
+  },
+  {
+    "id": "restore",
+    "execute-command": "bin/restore.sh",
+    "command-working-directory": "/var/lib/neo4j",
+    "include-command-output-in-response": true,
+    "trigger-rule-mismatch-http-response-code": 403,
+    "pass-arguments-to-command": [
+      {
+        "source": "url",
+        "name": "name"
+      }
+    ],
+    "trigger-rule": {
+      "and": [
+        {
+          "match": {
+            "type": "payload-hash-sha256",
+            "secret": "",
+            "parameter": {
+              "source": "header",
+              "name": "X-Hub-Signature"
+            }
+          }
+        }
+      ]
+    }
+  },
+  {
+    "id": "backup",
+    "execute-command": "bin/backup.sh",
+    "command-working-directory": "/var/lib/neo4j",
+    "include-command-output-in-response": true,
+    "trigger-rule-mismatch-http-response-code": 403,
+    "pass-arguments-to-command": [
+      {
+        "source": "url",
+        "name": "name"
+      }
+    ],
+    "trigger-rule": {
+      "and": [
+        {
+          "match": {
+            "type": "payload-hash-sha256",
+            "secret": "",
+            "parameter": {
+              "source": "header",
+              "name": "X-Hub-Signature"
+            }
+          }
+        }
+      ]
+    }
+  }
+]
