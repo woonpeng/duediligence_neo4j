@@ -1,0 +1,17 @@
+language: python
+python:
+- '2.7'
+branches:
+  only:
+  - develop
+services:
+- docker
+script:
+- if [ "$TRAVIS_EVENT_TYPE" == "push" ] && [ "$TRAVIS_BRANCH" == "develop" ]; then
+      docker login -u="$DOCKER_USER" -p="$DOCKER_PASS" ;
+      REPO=${TRAVIS_REPO_SLUG} ;
+      TAG="latest" ;
+      echo $REPO:$TAG ;
+      docker build -t $REPO:$TAG --pull . ;
+      docker push $REPO:$TAG ;
+  fi
