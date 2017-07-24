@@ -15,7 +15,7 @@ service neo4j stop && \
       printf "Restoring backup from $BACKUP_FILENAME\n"
     fi && \
     neo4j-admin load --database=graph.db --from="$BACKUP_FILENAME" --force=true && \
-  popd
+  popd && \
 service neo4j start
 
-source /opt/neo4j-webhook/wait-for-db.sh
+source bin/wait-for-db.sh

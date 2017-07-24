@@ -15,7 +15,7 @@ service neo4j stop && \
     rm -f "$BACKUP_FILENAME" && \
     printf "Backing up database to $BACKUP_FILENAME\n" && \
     neo4j-admin dump --database=graph.db --to="$BACKUP_FILENAME" && \
-  popd
+  popd && \
 service neo4j start
 
-source /opt/neo4j-webhook/wait-for-db.sh
+source bin/wait-for-db.sh
