@@ -1,0 +1,11 @@
+FROM centos
+ARG WEBHOOK_VERSION=2.6.4
+ARG USER=root
+RUN yum install -y rpmdevtools rpmlint wget && rpmdev-setuptree
+RUN wget https://github.com/adnanh/webhook/releases/download/${WEBHOOK_VERSION}/webhook-linux-386.tar.gz -O $HOME/rpmbuild/SOURCES/webhook-linux-i386.tar.gz
+RUN wget https://github.com/adnanh/webhook/releases/download/${WEBHOOK_VERSION}/webhook-linux-amd64.tar.gz -O $HOME/rpmbuild/SOURCES/webhook-linux-x86_64.tar.gz
+COPY scripts/* webhook/* packaging/* /${USER}/rpmbuild/SOURCES/
+COPY packaging/*.spec /${USER}/rpmbuild/SPECS/
+WORKDIR /${USER}/rpmbuild/SPECS/
+RUN rpmbuild -ba --target i386 *.spec
+RUN rpmbuild -ba --target amd64 *.spec

@@ -1,0 +1,16 @@
+[Unit]
+Description=neo4j-webhook
+Wants=neo4j.service
+After=network.target neo4j.service
+
+[Service]
+ExecStart=/opt/neo4j-webhook/neo4j-webhook.sh
+Restart=on-failure
+User=root
+Group=root
+Environment=
+LimitNOFILE=60000
+TimeoutSec=120
+
+[Install]
+WantedBy=multi-user.target

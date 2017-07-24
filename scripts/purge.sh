@@ -2,10 +2,12 @@
 set -euo pipefail
 
 service neo4j stop && \
-  pushd /data/databases && \
-    printf "Purging the database\n"
-    rm -rf graph.db && \
-  popd && \
+  queryresult=$(neo4j-admin check-consistency | grep "record format from store") && \
+  regex='record format from store (.*)' && \
+  [[ $queryresult =~ $regex ]] && \
+  dbaddress=${BASH_REMATCH[1]} && \
+  printf "Purging the database\n"
+  rm -rf $dbaddress
 service neo4j start
 
-source bin/wait-for-db.sh
+source /opt/neo4j-webhook/wait-for-db.sh

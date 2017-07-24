@@ -1,8 +1,8 @@
 [
   {
     "id": "cleanup",
-    "execute-command": "bin/cleanup.sh",
-    "command-working-directory": "/var/lib/neo4j",
+    "execute-command": "/opt/neo4j-webhook/cleanup.sh",
+    "command-working-directory": "/opt/neo4j-webhook",
     "include-command-output-in-response": true,
     "trigger-rule-mismatch-http-response-code": 403,
     "trigger-rule": {
@@ -22,8 +22,8 @@
   },
   {
     "id": "purge",
-    "execute-command": "bin/purge.sh",
-    "command-working-directory": "/var/lib/neo4j",
+    "execute-command": "/opt/neo4j-webhook/purge.sh",
+    "command-working-directory": "/opt/neo4j-webhook",
     "include-command-output-in-response": true,
     "trigger-rule-mismatch-http-response-code": 403,
     "trigger-rule": {
@@ -43,8 +43,8 @@
   },
   {
     "id": "restore",
-    "execute-command": "bin/restore.sh",
-    "command-working-directory": "/var/lib/neo4j",
+    "execute-command": "/opt/neo4j-webhook/restore.sh",
+    "command-working-directory": "/opt/neo4j-webhook",
     "include-command-output-in-response": true,
     "trigger-rule-mismatch-http-response-code": 403,
     "pass-arguments-to-command": [
@@ -70,8 +70,8 @@
   },
   {
     "id": "backup",
-    "execute-command": "bin/backup.sh",
-    "command-working-directory": "/var/lib/neo4j",
+    "execute-command": "/opt/neo4j-webhook/backup.sh",
+    "command-working-directory": "/opt/neo4j-webhook",
     "include-command-output-in-response": true,
     "trigger-rule-mismatch-http-response-code": 403,
     "pass-arguments-to-command": [
