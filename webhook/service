@@ -4,11 +4,11 @@ set -euo pipefail
 # Simple script to make neo4j in docker image to be similar to neo4j server in starting and stopping 
 if [ $1 = "neo4j" ]; then 
   if [ $2 = "start" ]; then 
-    exec bin/neo4j start
+    exec /var/lib/neo4j/bin/neo4j start
   elif [ $2 = "stop" ]; then 
-    exec bin/neo4j stop
+    exec /var/lib/neo4j/bin/neo4j stop
   elif [ $2 = "status" ]; then 
-    exec bin/neo4j status
+    exec /var/lib/neo4j/bin/neo4j status
   fi
 fi
 

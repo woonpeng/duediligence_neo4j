@@ -51,3 +51,28 @@ import os
 
 hmac.new(key=os.environ['WEBHOOK_SECRET'], msg='username', digestmod=hashlib.sha256).hexdigest()
 ```
+
+## Enabling secure mode 
+
+By default, the webhook is started to serve the endpoints via http. In order to serve the endpoints via https, corresponding certificate and key files have to be provided by setting the environment variables `NEO4J_WEBHOOK_CERT` and 
+`NEO4J_WEBHOOK_KEY` to point to the respective files. A self signed certificate can be generated via:
+
+```
+openssl req -newkey rsa:2048 -nodes -keyout key.pem -x509 -days 365 -out certificate.pem
+```
+
+## Packaging as a RPM
+
+Running the script `build-packaging.sh` will build a RPM which can be installed in the host machine (with Neo4j installed) as a service. 
+
+To install the RPM on the host machine: 
+```
+sudo rpm -i neo4j-webhook*.rpm
+```
+Neo4j has to be installed first before installing the webhook
+
+The secret key, certificate and key files can be configured via: 
+```
+sudo configure-neo4j-webhook [...]
+```
+

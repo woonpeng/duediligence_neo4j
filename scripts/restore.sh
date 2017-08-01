@@ -3,9 +3,9 @@ set -euo pipefail
 
 BACKUP_FILENAME=""
 
-mkdir -p /data/backups && \
-service neo4j stop && \
-  pushd /data/backups && \
+mkdir -p {{WEBHOOK_BACKUP_PATH}} && \
+sudo service neo4j stop && \
+  pushd {{WEBHOOK_BACKUP_PATH}} && \
     if [ $# -eq 0 ] || [ -z "$1" ] ; then \
       BACKUP_FILENAME=$(ls -rc | tail -n 1)
       printf "Restoring latest backup from $BACKUP_FILENAME\n"
@@ -15,7 +15,7 @@ service neo4j stop && \
       printf "Restoring backup from $BACKUP_FILENAME\n"
     fi && \
     neo4j-admin load --database=graph.db --from="$BACKUP_FILENAME" --force=true && \
-  popd && \
-service neo4j start
+  popd
+sudo service neo4j start
 
-source bin/wait-for-db.sh
+source {{WEBHOOK_INSTALL_PATH}}/wait-for-db.sh
