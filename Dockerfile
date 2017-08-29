@@ -25,28 +25,22 @@ ENV WEBHOOK_SERVICE ${WEBHOOK_SERVICE:-"neo4j-webhook"}
 ENV WEBHOOK_BACKUP_PATH ${WEBHOOK_BACKUP_PATH:-"/data/backups"}
 ENV WEBHOOK_NEO4J_BOLT_PORT ${WEBHOOK_NEO4J_BOLT_PORT:-"7687"}
 
-# Install web hook and setup start up script to use webhook and run neo4j
-RUN set -ex \
-  && mkdir -p /opt/neo4j-webhook \
-  && mkdir -p /etc/neo4j-webhook \
-  && curl -L https://github.com/adnanh/webhook/releases/download/${WEBHOOK_VERSION}/webhook-linux-386.tar.gz \
-       | tar xz -C ${WEBHOOK_INSTALL_PATH}/ --strip-components 1 \
-  && sed -i -e "s#exec bin/neo4j console#/${WEBHOOK_INSTALL_PATH}/service neo4j start \n ${WEBHOOK_INSTALL_PATH}/gen_hook.sh ${WEBHOOK_CONFIG_PATH}/hooks.json \n ${WEBHOOK_INSTALL_PATH}/neo4j-webhook.sh #" /docker-entrypoint.sh
-
-# Copy hooks configuration 
-COPY webhook/hooks.json ${WEBHOOK_CONFIG_PATH}/
+# Install ssh server
+RUN apk --update add openssh-server openssh-client && mkdir /var/run/sshd && \
+    ssh-keygen -A && \
+    sed -i -e "s#exec bin/neo4j console#/usr/sbin/sshd\n${WEBHOOK_INSTALL_PATH}/service neo4j start \n#" /docker-entrypoint.sh
 
 # Copy the script and dummy 'service' command to emulate as neo4j service 
 # This is to make the setup similar to an actual neo4j server (at least to the scripts)
-COPY scripts/ webhook/gen_hook.sh webhook/service webhook/neo4j-webhook.sh webhook/configure-neo4j-webhook.sh ${WEBHOOK_INSTALL_PATH}/
+COPY scripts/ ${WEBHOOK_INSTALL_PATH}/
+
+# Update the files with the environment variables
+RUN ${WEBHOOK_INSTALL_PATH}/update_vars.sh ${WEBHOOK_INSTALL_PATH}'/*.sh'
 
 # Add path to the bin directory
 ENV PATH=${PATH}:${WEBHOOK_INSTALL_PATH}:/var/lib/neo4j/bin
 
-# Setup a default secret key needed by webhook
-ENV WEBHOOK_SECRET=fixme
+# Add environment to ssh
+RUN mkdir -p /root/.ssh/ && env > /root/.ssh/environment && sed -i "s|#PermitUserEnvironment no|PermitUserEnvironment yes|" /etc/ssh/sshd_config
 
-# Update the files with the environment variables
-RUN ${WEBHOOK_INSTALL_PATH}/update_vars.sh ${WEBHOOK_INSTALL_PATH}'/*.sh' && \
-    ${WEBHOOK_INSTALL_PATH}/update_vars.sh ${WEBHOOK_CONFIG_PATH}'/*.json'
 

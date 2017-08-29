@@ -1,19 +1,12 @@
 FROM centos
 ARG USER=root
 
-# Webhook configuration arguments
-ARG WEBHOOK_VERSION=2.6.4
-
 # Install base packages 
 RUN yum install -y rpmdevtools rpmlint wget && rpmdev-setuptree && curl "https://bootstrap.pypa.io/get-pip.py" | python 
 RUN pip install j2cli
 
-# Get webhook binaries
-RUN wget https://github.com/adnanh/webhook/releases/download/${WEBHOOK_VERSION}/webhook-linux-386.tar.gz -O $HOME/rpmbuild/SOURCES/webhook-linux-i386.tar.gz
-RUN wget https://github.com/adnanh/webhook/releases/download/${WEBHOOK_VERSION}/webhook-linux-amd64.tar.gz -O $HOME/rpmbuild/SOURCES/webhook-linux-x86_64.tar.gz
-
 # Copy the scripts in and update with the given settings specified via the environment variables
-COPY scripts/* webhook/* packaging/* /${USER}/rpmbuild/SOURCES/
+COPY scripts/* packaging/* /${USER}/rpmbuild/SOURCES/
 COPY packaging/*.spec /${USER}/rpmbuild/SPECS/
 
 # Arguments
