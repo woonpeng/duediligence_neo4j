@@ -31,9 +31,7 @@ ENV WEBHOOK_NEO4J_BOLT_PORT ${WEBHOOK_NEO4J_BOLT_PORT:-"7687"}
 # Update the files with the environment variables 
 RUN /${USER}/rpmbuild/SOURCES/update_vars.sh /${USER}'/rpmbuild/SOURCES/*.sh'
 RUN /${USER}/rpmbuild/SOURCES/update_vars.sh /${USER}'/rpmbuild/SOURCES/*.sudoer'
-RUN /${USER}/rpmbuild/SOURCES/update_vars.sh /${USER}'/rpmbuild/SOURCES/*.service'
 RUN /${USER}/rpmbuild/SOURCES/update_vars.sh /${USER}'/rpmbuild/SPECS/*.spec'
-RUN /${USER}/rpmbuild/SOURCES/update_vars.sh /${USER}'/rpmbuild/SOURCES/*.json'
 
 # Build the RPMs
 WORKDIR /${USER}/rpmbuild/SPECS/

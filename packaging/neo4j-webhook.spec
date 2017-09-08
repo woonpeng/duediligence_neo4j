@@ -1,5 +1,5 @@
 Name: {{WEBHOOK_SERVICE}}
-Version: 0.1
+Version: 0.2
 Release: 1%{?dist}
 Summary: This package adds backup and restore capabilities to Neo4j server via webhook
 
