@@ -20,7 +20,7 @@ host=
 container=
 rsa_pub_file=~/.ssh/id_rsa.pub
 
-while getopts ":hl:u:c:s:" opt; do
+while getopts ":hl:u:c:s:r:" opt; do
   case ${opt} in
     l )
       user=$OPTARG
