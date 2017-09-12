@@ -3,9 +3,9 @@ set -euo pipefail
 
 BACKUP_FILENAME=""
 
-mkdir -p {{WEBHOOK_BACKUP_PATH}} && \
+mkdir -p {{EXTENSION_BACKUP_PATH}} && \
 sudo service neo4j stop && \
-  pushd {{WEBHOOK_BACKUP_PATH}} && \
+  pushd {{EXTENSION_BACKUP_PATH}} && \
     if [ $# -eq 0 ] || [ -z "$1" ] ; then \
       BACKUP_FILENAME=$(ls -rc | tail -n 1)
       printf "Restoring latest backup from $BACKUP_FILENAME\n"
@@ -18,4 +18,4 @@ sudo service neo4j stop && \
   popd
 sudo service neo4j start
 
-source {{WEBHOOK_INSTALL_PATH}}/wait-for-db.sh
+source {{EXTENSION_INSTALL_PATH}}/wait-for-db.sh

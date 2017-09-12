@@ -1,4 +1,4 @@
-Name: {{WEBHOOK_SERVICE}}
+Name: {{EXTENSION_SERVICE}}
 Version: 0.2
 Release: 1%{?dist}
 Summary: This package adds backup and restore capabilities to Neo4j server via webhook
@@ -13,9 +13,9 @@ Requires: openssh openssh-clients neo4j
 Neo4j community edition does not have an easy way to backup, restore and purge the database. This package make use of the administration tools on the server and expose this additional functionality via ssh
 
 %install
-%{__mkdir_p} %{buildroot}{{WEBHOOK_INSTALL_PATH}}
-%{__cp} %{_sourcedir}/*.sh %{buildroot}{{WEBHOOK_INSTALL_PATH}}/
-%{__mkdir_p} %{buildroot}{{WEBHOOK_BACKUP_PATH}}
+%{__mkdir_p} %{buildroot}{{EXTENSION_INSTALL_PATH}}
+%{__cp} %{_sourcedir}/*.sh %{buildroot}{{EXTENSION_INSTALL_PATH}}/
+%{__mkdir_p} %{buildroot}{{EXTENSION_BACKUP_PATH}}
 %{__mkdir_p} %{buildroot}/etc/sudoers.d
 %{__cp} %{_sourcedir}/neo4j-webhook.sudoer %{buildroot}/etc/sudoers.d/neo4j-webhook
 
@@ -27,8 +27,8 @@ rm -rf %{buildroot}
 
 %files
 %defattr(0755,neo4j,neo4j,0755)
-{{WEBHOOK_BACKUP_PATH}}
-{{WEBHOOK_INSTALL_PATH}}/
+{{EXTENSION_BACKUP_PATH}}
+{{EXTENSION_INSTALL_PATH}}/
 /etc/sudoers.d/neo4j-webhook
 
 %changelog 
