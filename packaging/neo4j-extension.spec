@@ -17,10 +17,10 @@ Neo4j community edition does not have an easy way to backup, restore and purge t
 %{__cp} %{_sourcedir}/*.sh %{buildroot}{{EXTENSION_INSTALL_PATH}}/
 %{__mkdir_p} %{buildroot}{{EXTENSION_BACKUP_PATH}}
 %{__mkdir_p} %{buildroot}/etc/sudoers.d
-%{__cp} %{_sourcedir}/neo4j-webhook.sudoer %{buildroot}/etc/sudoers.d/neo4j-webhook
+%{__cp} %{_sourcedir}/neo4j-extension.sudoer %{buildroot}/etc/sudoers.d/neo4j-extension
 
 %post
-chown root:root /etc/sudoers.d/neo4j-webhook
+chown root:root /etc/sudoers.d/neo4j-extension
 
 %clean
 rm -rf %{buildroot}
@@ -29,7 +29,7 @@ rm -rf %{buildroot}
 %defattr(0755,neo4j,neo4j,0755)
 {{EXTENSION_BACKUP_PATH}}
 {{EXTENSION_INSTALL_PATH}}/
-/etc/sudoers.d/neo4j-webhook
+/etc/sudoers.d/neo4j-extension
 
 %changelog 
 *Tue Aug 29 2017 Neo4j Extensions Hereoes 0.2

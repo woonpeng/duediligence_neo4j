@@ -40,6 +40,6 @@ sudo service neo4j stop && \
   popd
 sudo service neo4j start
 
-source /opt/neo4j-webhook/wait-for-db.sh
+source {{EXTENSION_INSTALL_PATH}}/wait-for-db.sh
 
 
