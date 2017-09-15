@@ -1,3 +1,0 @@
-[submodule "submodules/finnet-deploy"]
-	path = submodules/finnet-deploy
-	url = git@github.com:datagovsg/finnet-deploy.git
