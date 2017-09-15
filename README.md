@@ -1,5 +1,9 @@
 # Neo4J 3.1 with endpoints for purge, backup, restore, and cleanup
 
+## Ansible deployment
+
+The file `authorized_keys` contains the public key needed by Ansible to deploy into the Neo4j image. This file is copied from the `finnet-deploy` repository. See https://github.com/datagovsg/finnet-deploy/blob/neo4j-ssh/vars/keys/neo4j_staging.pub for more information
+
 ## Endpoint hooks
 
 **Note:** The interface has changed from a webhook to providing SSH access to call the scripts
