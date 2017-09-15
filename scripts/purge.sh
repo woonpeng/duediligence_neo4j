@@ -10,4 +10,4 @@ sudo service neo4j stop && \
   rm -rf $dbaddress
 sudo service neo4j start
 
-source {{WEBHOOK_INSTALL_PATH}}/wait-for-db.sh
+source {{EXTENSION_INSTALL_PATH}}/wait-for-db.sh

@@ -6,47 +6,36 @@ RUN set -ex \
       && curl "https://bootstrap.pypa.io/get-pip.py" | python && pip install j2cli
 
 # Arguments
-ARG WEBHOOK_VERSION
-ARG WEBHOOK_INSTALL_PATH
-ARG WEBHOOK_CONFIG_PATH
-ARG WEBHOOK_USER
-ARG WEBHOOK_GROUP
-ARG WEBHOOK_SERVICE
-ARG WEBHOOK_BACKUP_PATH
-ARG WEBHOOK_NEO4J_BOLT_PORT
+ARG EXTENSION_INSTALL_PATH
+ARG EXTENSION_GROUP
+ARG EXTENSION_SERVICE
+ARG EXTENSION_BACKUP_PATH
+ARG EXTENSION_NEO4J_BOLT_PORT
 
 # Set installation options that will be used to update the scripts
-ENV WEBHOOK_VERSION ${WEBHOOK_VERSION:-2.6.4}
-ENV WEBHOOK_INSTALL_PATH ${WEBHOOK_INSTALL_PATH:-"/opt/neo4j-webhook"}
-ENV WEBHOOK_CONFIG_PATH ${WEBHOOK_CONFIG_PATH:-"/etc/opt/neo4j-webhook"}
-ENV WEBHOOK_USER ${WEBHOOK_USER:-"neo4j"}
-ENV WEBHOOK_GROUP ${WEBHOOK_GROUP:-"neo4j"}
-ENV WEBHOOK_SERVICE ${WEBHOOK_SERVICE:-"neo4j-webhook"}
-ENV WEBHOOK_BACKUP_PATH ${WEBHOOK_BACKUP_PATH:-"/data/backups"}
-ENV WEBHOOK_NEO4J_BOLT_PORT ${WEBHOOK_NEO4J_BOLT_PORT:-"7687"}
+ENV EXTENSION_INSTALL_PATH ${EXTENSION_INSTALL_PATH:-"/opt/neo4j-extension"}
+ENV EXTENSION_GROUP ${EXTENSION_GROUP:-"neo4j"}
+ENV EXTENSION_SERVICE ${EXTENSION_SERVICE:-"neo4j-extension"}
+ENV EXTENSION_BACKUP_PATH ${EXTENSION_BACKUP_PATH:-"/data/backups"}
+ENV EXTENSION_NEO4J_BOLT_PORT ${EXTENSION_NEO4J_BOLT_PORT:-"7687"}
 
-# Install web hook and setup start up script to use webhook and run neo4j
-RUN set -ex \
-  && mkdir -p /opt/neo4j-webhook \
-  && mkdir -p /etc/neo4j-webhook \
-  && curl -L https://github.com/adnanh/webhook/releases/download/${WEBHOOK_VERSION}/webhook-linux-386.tar.gz \
-       | tar xz -C ${WEBHOOK_INSTALL_PATH}/ --strip-components 1 \
-  && sed -i -e "s#exec bin/neo4j console#/${WEBHOOK_INSTALL_PATH}/service neo4j start \n ${WEBHOOK_INSTALL_PATH}/gen_hook.sh ${WEBHOOK_CONFIG_PATH}/hooks.json \n ${WEBHOOK_INSTALL_PATH}/neo4j-webhook.sh #" /docker-entrypoint.sh
+# Install ssh server
+RUN apk --update add openssh-server openssh-client && mkdir /var/run/sshd && \
+    ssh-keygen -A && \
+    mkdir -p /root/.ssh/ && \
+    sed -i "s|#Port 22|Port 9000|" /etc/ssh/sshd_config && \
+    sed -i 's|exec bin/neo4j console|mkdir -p ~/.ssh \&\& env > ~/.ssh/environment \&\& bin/neo4j start \&\& /usr/sbin/sshd -D|' /docker-entrypoint.sh && \
+    sed -i "s|#PermitUserEnvironment no|PermitUserEnvironment yes|" /etc/ssh/sshd_config
 
-# Copy hooks configuration 
-COPY webhook/hooks.json ${WEBHOOK_CONFIG_PATH}/
+# Copy public key for ansible deployment
+COPY authorized_keys /root/.ssh/
 
-# Copy the script and dummy 'service' command to emulate as neo4j service 
+# Copy the script and dummy 'service' command to emulate as neo4j service
 # This is to make the setup similar to an actual neo4j server (at least to the scripts)
-COPY scripts/ webhook/gen_hook.sh webhook/service webhook/neo4j-webhook.sh webhook/configure-neo4j-webhook.sh ${WEBHOOK_INSTALL_PATH}/
-
-# Add path to the bin directory
-ENV PATH=${PATH}:${WEBHOOK_INSTALL_PATH}:/var/lib/neo4j/bin
-
-# Setup a default secret key needed by webhook
-ENV WEBHOOK_SECRET=fixme
+COPY scripts/ ${EXTENSION_INSTALL_PATH}/
 
 # Update the files with the environment variables
-RUN ${WEBHOOK_INSTALL_PATH}/update_vars.sh ${WEBHOOK_INSTALL_PATH}'/*.sh' && \
-    ${WEBHOOK_INSTALL_PATH}/update_vars.sh ${WEBHOOK_CONFIG_PATH}'/*.json'
+RUN ${EXTENSION_INSTALL_PATH}/update_vars.sh ${EXTENSION_INSTALL_PATH}'/*.sh'
 
+# Add path to the bin directory
+ENV PATH=${PATH}:${EXTENSION_INSTALL_PATH}:/var/lib/neo4j/bin
