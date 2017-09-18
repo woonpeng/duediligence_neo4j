@@ -23,7 +23,6 @@ ENV EXTENSION_NEO4J_BOLT_PORT ${EXTENSION_NEO4J_BOLT_PORT:-"7687"}
 RUN apk --update add openssh-server openssh-client && mkdir /var/run/sshd && \
     ssh-keygen -A && \
     mkdir -p /root/.ssh/ && \
-    sed -i "s|#Port 22|Port 9000|" /etc/ssh/sshd_config && \
     sed -i 's|exec bin/neo4j console|mkdir -p ~/.ssh \&\& env > ~/.ssh/environment \&\& bin/neo4j start \&\& /usr/sbin/sshd -D|' /docker-entrypoint.sh && \
     sed -i "s|#PermitUserEnvironment no|PermitUserEnvironment yes|" /etc/ssh/sshd_config
 
