@@ -11,19 +11,13 @@ COPY packaging/*.spec /${USER}/rpmbuild/SPECS/
 
 # Arguments
 ARG EXTENSION_INSTALL_PATH
-ARG EXTENSION_GROUP
-ARG EXTENSION_SERVICE
-ARG EXTENSION_BACKUP_PATH
-ARG EXTENSION_NEO4J_BOLT_PORT
 
 # Set installation options that will be used to update the scripts
+# Update the config.json in the scripts folder for the configurations
 ENV EXTENSION_INSTALL_PATH ${EXTENSION_INSTALL_PATH:-"/opt/neo4j-extension"}
-ENV EXTENSION_GROUP ${EXTENSION_GROUP:-"neo4j"}
-ENV EXTENSION_SERVICE ${EXTENSION_SERVICE:-"neo4j-extension"}
-ENV EXTENSION_BACKUP_PATH ${EXTENSION_BACKUP_PATH:-"/data/backups"}
-ENV EXTENSION_NEO4J_BOLT_PORT ${EXTENSION_NEO4J_BOLT_PORT:-"7687"}
 
 # Update the files with the environment variables 
+WORKDIR /${USER}/rpmbuild/SOURCES
 RUN /${USER}/rpmbuild/SOURCES/update_vars.sh /${USER}'/rpmbuild/SOURCES/*.sh'
 RUN /${USER}/rpmbuild/SOURCES/update_vars.sh /${USER}'/rpmbuild/SOURCES/*.sudoer'
 RUN /${USER}/rpmbuild/SOURCES/update_vars.sh /${USER}'/rpmbuild/SPECS/*.spec'

@@ -1,6 +1,6 @@
 # Grant the user 'neo4j' the permission to start and stop the neo4j service 
 # This is needed for the backup and restore extension service to Neo4j which 
 # needs to stop the Neo4j service before proceeding 
-%{{EXTENSION_GROUP}} ALL=NOPASSWD: /sbin/service neo4j start
-%{{EXTENSION_GROUP}} ALL=NOPASSWD: /sbin/service neo4j stop
+%{{pipeline.neo4j.ssh_user}} ALL=NOPASSWD: /sbin/service neo4j start
+%{{pipeline.neo4j.ssh_user}} ALL=NOPASSWD: /sbin/service neo4j stop
 

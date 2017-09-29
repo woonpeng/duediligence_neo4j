@@ -15,7 +15,7 @@ fi
 # The official neo4j image starts neo4j once to check for correct credentials
 # stops it, and then starts it for real.
 NEO4J_TIMEOUT=60
-DATABASE_DEV="/dev/tcp/localhost/{{EXTENSION_NEO4J_BOLT_PORT}}"
+DATABASE_DEV="/dev/tcp/localhost/{{pipeline.neo4j.bolt_port}}"
 echo "Checking database connection ${DATABASE_DEV}"
 timeout ${BUSYTIMEFLAG} ${NEO4J_TIMEOUT} bash <<EOT
 

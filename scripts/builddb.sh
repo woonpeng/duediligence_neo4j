@@ -40,6 +40,6 @@ sudo service neo4j stop && \
   popd
 sudo service neo4j start
 
-source {{EXTENSION_INSTALL_PATH}}/wait-for-db.sh
+source {{pipeline.neo4j.scripts_path}}/wait-for-db.sh
 
 

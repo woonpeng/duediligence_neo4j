@@ -3,9 +3,9 @@ set -euo pipefail
 
 BACKUP_FILENAME=""
 
-mkdir -p {{EXTENSION_BACKUP_PATH}} && \
+mkdir -p {{pipeline.neo4j.backup_path}} && \
 sudo service neo4j stop && \
-  pushd {{EXTENSION_BACKUP_PATH}} && \
+  pushd {{pipeline.neo4j.backup_path}} && \
     if [ $# -eq 0 ] || [ -z "$1" ] ; then \
       BACKUP_FILENAME=$(ls -rc | tail -n 1)
       printf "Restoring latest backup from $BACKUP_FILENAME\n"
@@ -18,4 +18,4 @@ sudo service neo4j stop && \
   popd
 sudo service neo4j start
 
-source {{EXTENSION_INSTALL_PATH}}/wait-for-db.sh
+source {{pipeline.neo4j.scripts_path}}/wait-for-db.sh

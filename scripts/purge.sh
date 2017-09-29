@@ -10,4 +10,4 @@ sudo service neo4j stop && \
   rm -rf $dbaddress
 sudo service neo4j start
 
-source {{EXTENSION_INSTALL_PATH}}/wait-for-db.sh
+source {{pipeline.neo4j.scripts_path}}/wait-for-db.sh

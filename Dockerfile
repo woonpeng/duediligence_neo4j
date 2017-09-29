@@ -7,17 +7,10 @@ RUN set -ex \
 
 # Arguments
 ARG EXTENSION_INSTALL_PATH
-ARG EXTENSION_GROUP
-ARG EXTENSION_SERVICE
-ARG EXTENSION_BACKUP_PATH
-ARG EXTENSION_NEO4J_BOLT_PORT
 
 # Set installation options that will be used to update the scripts
+# Modify config.json in scripts directory for the other configurations
 ENV EXTENSION_INSTALL_PATH ${EXTENSION_INSTALL_PATH:-"/opt/neo4j-extension"}
-ENV EXTENSION_GROUP ${EXTENSION_GROUP:-"neo4j"}
-ENV EXTENSION_SERVICE ${EXTENSION_SERVICE:-"neo4j-extension"}
-ENV EXTENSION_BACKUP_PATH ${EXTENSION_BACKUP_PATH:-"/data/backups"}
-ENV EXTENSION_NEO4J_BOLT_PORT ${EXTENSION_NEO4J_BOLT_PORT:-"7687"}
 
 # Install ssh server
 RUN apk --update add openssh-server openssh-client && mkdir /var/run/sshd && \
@@ -34,6 +27,7 @@ COPY authorized_keys /root/.ssh/
 COPY scripts/ ${EXTENSION_INSTALL_PATH}/
 
 # Update the files with the environment variables
+WORKDIR ${EXTENSION_INSTALL_PATH}
 RUN ${EXTENSION_INSTALL_PATH}/update_vars.sh ${EXTENSION_INSTALL_PATH}'/*.sh'
 
 # Add path to the bin directory
