@@ -27,7 +27,6 @@ COPY authorized_keys /root/.ssh/
 COPY scripts/ ${EXTENSION_INSTALL_PATH}/
 
 # Update the files with the environment variables
-WORKDIR ${EXTENSION_INSTALL_PATH}
 RUN ${EXTENSION_INSTALL_PATH}/update_vars.sh ${EXTENSION_INSTALL_PATH}'/*.sh'
 
 # Add path to the bin directory

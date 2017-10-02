@@ -4,7 +4,7 @@ filelist=$(find $1 ! -name $0)
 for file in $filelist
 do
   echo Updating $file
-  j2 $file config.json > $tempfile
+  j2 $file "${EXTENSION_INSTALL_PATH}/config.json" > $tempfile
   cat $tempfile > $file
   rm $tempfile
 done
