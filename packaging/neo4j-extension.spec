@@ -1,7 +1,7 @@
 Name: {{pipeline.neo4j.servicename}}
 Version: 0.2
 Release: 1%{?dist}
-Summary: This package adds backup and restore capabilities to Neo4j server via webhook
+Summary: This package adds backup and restore capabilities to Neo4j server via SSH
 
 Group: Neo4j Extension Heroes
 License: MIT License

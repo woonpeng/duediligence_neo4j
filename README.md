@@ -58,6 +58,6 @@ Running the script `build-packaging.sh` will build a RPM which can be installed 
 
 To install the RPM on the host machine:
 ```
-sudo rpm -i neo4j-webhook*.rpm
+sudo rpm -i neo4j-extensions*.rpm
 ```
 Neo4j has to be installed first before installing the custom addons.
