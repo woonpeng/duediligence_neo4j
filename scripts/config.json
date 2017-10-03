@@ -3,9 +3,9 @@
     "neo4j": {
       "ssh_user": "neo4j",
       "bolt_port": "7687",
-      "scripts_path": "/opt/neo4j-extensions",
+      "scripts_path": "/opt/neo4j-extension",
       "backup_path": "/data/backups",
-      "servicename": "neo4j-extensions"
+      "servicename": "neo4j-extension"
     }
   }
 }
