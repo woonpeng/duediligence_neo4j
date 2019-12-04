@@ -10,7 +10,7 @@ A sample docker-compose file is provided on setting up the neo4j server. Before 
 
 ### Setting up ssh keys
 
-On another machine, you can set up a pair of ssh keys by:
+On another machine or container, you can set up a pair of ssh keys by:
 
 ```
 ssh-keygen -t rsa -b 4096 -C "your_email@example.com"
