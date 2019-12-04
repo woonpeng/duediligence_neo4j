@@ -12,12 +12,15 @@ ARG EXTENSION_INSTALL_PATH
 # Modify config.json in scripts directory for the other configurations
 ENV EXTENSION_INSTALL_PATH ${EXTENSION_INSTALL_PATH:-"/opt/neo4j-extension"}
 
-# Install ssh server
+# Install ssh server 
 RUN apk --update add openssh-server openssh-client && mkdir /var/run/sshd && \
+    passwd -u root && \
     ssh-keygen -A && \
     mkdir -p /root/.ssh/ && \
-    sed -i 's|exec bin/neo4j console|mkdir -p ~/.ssh \&\& env > ~/.ssh/environment \&\& bin/neo4j start \&\& /usr/sbin/sshd -D|' /docker-entrypoint.sh && \
-    sed -i "s|#PermitUserEnvironment no|PermitUserEnvironment yes|" /etc/ssh/sshd_config
+    sed -i 's|exec bin/neo4j console|mkdir -p ~/.ssh \&\& env > ~/.ssh/environment \&\& chown -R root:root ~/.ssh \&\& bin/neo4j start \&\& /usr/sbin/sshd -D|' /docker-entrypoint.sh && \
+    sed -i "s|#PermitUserEnvironment no|PermitUserEnvironment yes|" /etc/ssh/sshd_config && \
+    sed -i "s|#UsePAM no|UsePAM yes|" /etc/ssh/sshd_config && \
+    sed -i "s|#PasswordAuthentication yes|PasswordAuthentication no|" /etc/ssh/sshd_config
 
 # Copy public key for ansible deployment
 COPY authorized_keys /root/.ssh/
