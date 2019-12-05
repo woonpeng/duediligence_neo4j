@@ -1,4 +1,5 @@
 FROM neo4j:3.3.0
+ENV NEO4J_AUTH=neo4j/test
 
 # Install findutils os package; used for housekeeping db backups
 RUN set -ex \
