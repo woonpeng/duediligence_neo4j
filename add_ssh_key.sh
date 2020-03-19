@@ -64,7 +64,7 @@ if [ $flag_newfile -eq 1 ];
 then
   echo "$authorized_keys">$authorized_keys_file
 else
-  echo "$authorized_keys" >>$authorized_keys_file
+  echo "$authorized_keys">>$authorized_keys_file
 fi
 
 echo Added "$rsa_pub_file" into the file "$authorized_keys_file"
