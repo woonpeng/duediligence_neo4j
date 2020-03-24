@@ -8,6 +8,11 @@ The file `authorized_keys` contains the public key needed by Ansible to deploy i
 
 A sample docker-compose file is provided on setting up the neo4j server. Before starting the server, you would need to set up the ssh keys to allow the finnet services to connect to the neo4j server. 
 
+```
+docker build -t duediligence-neo4j .
+./setup.sh
+```
+
 ### Setting up ssh keys
 
 On another machine or container, you can set up a pair of ssh keys by:
@@ -41,7 +46,7 @@ e.g.
 setting up a test client:
 
 ```
-docker run -ti --rm -v $(pwd)/id_rsa:/root/.ssh/id_rsa --network finnet-neo4j_neo4j-network alpine sh
+docker run -ti --rm -v $(pwd)/id_rsa:/root/.ssh/id_rsa --network my-bridge-network alpine sh
 ```
 
 Replace the network with the actual network created if needed. Install ssh client:
