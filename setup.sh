@@ -11,3 +11,5 @@ docker run -itd \
 docker cp ./neo4j_keys/authorized_keys neo4j:/root/.ssh/authorized_keys
 
 docker network connect my-bridge-network-dd neo4j
+
+docker exec neo4j service ssh start

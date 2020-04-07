@@ -1,9 +1,8 @@
-FROM neo4j:3.3.0
+FROM neo4j:4.0.2
 ENV NEO4J_AUTH=neo4j/test
 
 # Install findutils os package; used for housekeeping db backups
-RUN set -ex \
-      && apk add --update findutils sudo python curl \
+RUN   apt update && apt install -y dos2unix findutils sudo python curl \
       && curl "https://bootstrap.pypa.io/get-pip.py" | python && pip install j2cli
 
 # Arguments
@@ -13,8 +12,8 @@ ARG EXTENSION_INSTALL_PATH
 # Modify config.json in scripts directory for the other configurations
 ENV EXTENSION_INSTALL_PATH ${EXTENSION_INSTALL_PATH:-"/opt/neo4j-extension"}
 
-# Install ssh server 
-RUN apk --update add openssh-server openssh-client && mkdir /var/run/sshd && \
+# Install ssh server and start the service
+RUN apt install -y openssh-server openssh-client && mkdir /var/run/sshd && \
     passwd -u root && \
     ssh-keygen -A && \
     mkdir -p /root/.ssh/ && \
